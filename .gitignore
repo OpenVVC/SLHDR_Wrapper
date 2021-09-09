@@ -1,0 +1,4 @@
+config.mak
+*.so
+*.d
+*.o

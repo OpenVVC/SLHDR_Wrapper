@@ -38,6 +38,11 @@ for opt do
     case "$opt" in
         --help|-h) show_help
         ;;
+        --*dir*)
+            optname="${opt%%=*}"
+            optname="${optname#--}"
+            eval $optname="$optval"
+        ;;
         *)
             optname="${opt%%=*}"
             optname="${optname#--}"

@@ -39,10 +39,6 @@ for opt do
     esac
 done
 
-if [ $(${cxx} -dumpversion) -lt 7 ]; then
-  echo "Compiler ${cxx} is incompatible. Version must be 7 or newer."
-  exit 0
-fi
 libdir=${libdir:-${prefix}/lib}
 incdir=${incdir:-${prefix}/include}
 pkgdir=${pkgdir:-${libdir}/pkgconfig}

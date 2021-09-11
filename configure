@@ -4,6 +4,10 @@ cxx=g++
 
 prefix="/usr/local"
 
+log() {
+   printf "$*\n"
+}
+
 die() {
    printf "\e[0;31m$*\e[0m\n"
    exit 1
@@ -30,6 +34,11 @@ EOF
 }
 
 validate_lib() {
+   lib=$1
+   dir=$2
+
+   [ -f "${dir}/${lib}" ] && log "Found $1 in $2" || return 1
+
    return 0
 }
 
@@ -57,8 +66,15 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
 [ -z ${ssedir} ] && [ -z ${avxdir} ] && die "No SL-HDR install directory found."
 
-[ ! -z ${ssedir} ] && { [ -d ${ssedir} ] && validate_lib ${ssedir} || die "No SSE lib found in ${ssedir}"; }
-[ ! -z ${avxdir} ] && { [ -d ${avxdir} ] && validate_lib ${avxdir} || die "No AVX lib found in ${avxdir}"; }
+[ ! -z ${ssedir} ] && [ -d ${ssedir} ] && {
+  validate_lib libSLHDRPostprocessor.so "${ssedir}/lib" || die "SLHDRPostprocessor library not found in ${ssedir}"
+  validate_lib libSLHDRCommon.so        "${ssedir}/lib" || die "SLHDRCommon library not found in ${ssedir}"
+}
+
+[ ! -z ${avxdir} ] && [ -d ${avxdir} ] && {
+  validate_lib libSLHDRPostprocessor.so "${avxdir}/lib" || die "SLHDRPostprocessor library not found in ${avxdir}"
+  validate_lib libSLHDRCommon.so        "${avxdir}/lib" || die "SLHDRCommon library not found in ${avxdir}"
+}
 
 cat > config.mak <<EOF
   CXX= ${cxx}

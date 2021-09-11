@@ -4,6 +4,11 @@ cxx=g++
 
 prefix="/usr/local"
 
+die() {
+   printf "\e[0;31m$*\e[0m\n"
+   exit 1
+}
+
 show_help() {
     cat <<EOF
 Usage: configure [options]
@@ -53,3 +58,5 @@ cat > config.mak <<EOF
 	INCDIR=${incdir}
 	LIBDIR=${libdir}
 EOF
+
+exit 0

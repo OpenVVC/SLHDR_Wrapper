@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
+
 cxx=g++
+
+prefix="/usr/local"
+
 show_help() {
     cat <<EOF
 Usage: configure [options]
@@ -8,11 +12,17 @@ Options: [defaults in brackets after descriptions]
 Options:
   --help                   print this message
   --cxx=<compiler>         define used compiler[${cxx}]
-  --sse_folder=DIR         path to slhdr library
-  --avx2_folder=DIR        path to slhdr library
+  --sse-folder=DIR         path to slhdr library
+  --avx2-folder=DIR        path to slhdr library
+
+  --prefix=PREFIX          install in PREFIX [$prefix_default]
+  --libdir=LIBDIR          install library in LIBDIR [PREFIX/lib]
+  --incdir=DIR             install headers in DIR [PREFIX/include]
+  --pkgdir=DIR             install pkg-config files in DIR [LIBDIR/pkgconfig]
 EOF
   exit 0
 }
+
 
 # Override values set by user
 for opt do
@@ -33,6 +43,9 @@ if [ $(${cxx} -dumpversion) -lt 7 ]; then
   echo "Compiler ${cxx} is incompatible. Version must be 7 or newer."
   exit 0
 fi
+libdir=${libdir:-${prefix}/lib}
+incdir=${incdir:-${prefix}/include}
+pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
 cat > config.mak <<EOF
   CXX= ${cxx}
@@ -41,4 +54,8 @@ cat > config.mak <<EOF
   AVX2_CFLAGS= -mavx2
   SSE_FOLDER=${sse_folder}
   AVX2_FOLDER=${avx2_folder}
+
+	PKGDIR=${pkgdir}
+	INCDIR=${incdir}
+	LIBDIR=${libdir}
 EOF

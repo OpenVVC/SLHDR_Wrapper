@@ -55,6 +55,17 @@ check_libs_in_dir() {
    done
 }
 
+append_ldflags_list() {
+   lname=$1
+   shift
+
+   for elem in $* ; do
+      ld_flags="${ld_flags} -l${elem}"
+   done
+
+   eval "$lname=\"\$${lname} ${ld_flags}\""
+}
+
 for opt do
     optval="${opt#*=}"
     case "$opt" in
@@ -81,11 +92,14 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
 [ ! -z ${ssedir} ] && [ -d ${ssedir} ] && {
   check_libs_in_dir "${dep_list}" ${ssedir}
+  append_ldflags_list SSE_LD_FLAGS ${dep_list}
 }
 
 [ ! -z ${avxdir} ] && [ -d ${avxdir} ] && {
   check_libs_in_dir "${dep_list}" ${avxdir}
+  append_ldflags_list AVX_LD_FLAGS ${dep_list}
 }
+
 
 cat > config.mak <<EOF
   CXX= ${cxx}
@@ -94,6 +108,8 @@ cat > config.mak <<EOF
   AVX2_CFLAGS= -mavx2
   SSE_FOLDER=${ssedir}
   AVX2_FOLDER=${avxdir}
+  SSE_LD_FLAGS=${SSE_LD_FLAGS}
+  AVX2_LD_FLAGS=${AVX_LD_FLAGS}
 
 	PKGDIR=${pkgdir}
 	INCDIR=${incdir}

@@ -17,8 +17,9 @@ Options: [defaults in brackets after descriptions]
 Options:
   --help                   print this message
   --cxx=<compiler>         define used compiler[${cxx}]
-  --sse-folder=DIR         path to slhdr library
-  --avx2-folder=DIR        path to slhdr library
+
+  --ssedir=DIR             path to slhdr library SSE version
+  --avxdir=DIR             path to slhdr library AVX version
 
   --prefix=PREFIX          install in PREFIX [$prefix_default]
   --libdir=LIBDIR          install library in LIBDIR [PREFIX/lib]
@@ -36,7 +37,6 @@ for opt do
         *)
             optname="${opt%%=*}"
             optname="${optname#--}"
-            optname=$(echo "$optname" | sed 's/-/_/g')
             eval $optname='$optval'
         ;;
     esac
@@ -51,8 +51,8 @@ cat > config.mak <<EOF
   CFLAGS= -Wall -O3
   SSE_CFLAGS= -msse4.2
   AVX2_CFLAGS= -mavx2
-  SSE_FOLDER=${sse_folder}
-  AVX2_FOLDER=${avx2_folder}
+  SSE_FOLDER=${ssedir}
+  AVX2_FOLDER=${avxdir}
 
 	PKGDIR=${pkgdir}
 	INCDIR=${incdir}

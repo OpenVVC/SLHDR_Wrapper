@@ -57,13 +57,8 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
 [ -z ${ssedir} ] && [ -z ${avxdir} ] && die "No SL-HDR install directory found."
 
-if [ ! -z ${ssedir} ] ; then
-   [ -d ${ssedir} ] && validate_lib ${ssedir} || die "No SSE lib found in ${ssedir}"
-fi
-
-if [ ! -z ${avxdir} ] ; then
-   [ -d ${avxdir} ] && validate_lib ${avxdir} || die "No AVX lib found in ${avxdir}"
-fi
+[ ! -z ${ssedir} ] && { [ -d ${ssedir} ] && validate_lib ${ssedir} || die "No SSE lib found in ${ssedir}"; }
+[ ! -z ${avxdir} ] && { [ -d ${avxdir} ] && validate_lib ${avxdir} || die "No AVX lib found in ${avxdir}"; }
 
 cat > config.mak <<EOF
   CXX= ${cxx}

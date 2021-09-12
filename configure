@@ -44,7 +44,7 @@ Options:
   --ssedir=DIR             path to slhdr library SSE version
   --avxdir=DIR             path to slhdr library AVX version
 
-  --prefix=PREFIX          install in PREFIX [$prefix_default]
+  --prefix=PREFIX          install in PREFIX [${prefix}]
   --libdir=LIBDIR          install library in LIBDIR [PREFIX/lib]
   --incdir=DIR             install headers in DIR [PREFIX/include]
   --pkgdir=DIR             install pkg-config files in DIR [LIBDIR/pkgconfig]

@@ -21,10 +21,10 @@ pp_slhdr_sse.so: pp_wrapper_slhdr_sse.o
 pp_slhdr_avx2.so: pp_wrapper_slhdr_avx2.o
 	$(CC) -shared $^ -o $@ $(LD_FLAGS_AVX2)
 
-%_sse.o: %.cpp
+%_sse.o: %.cpp config.mak
 	$(CXX) -std=c++11 -c $< -o $@ -MMD -MF $(@:.o=.d) -MT $@ $(CFLAGS_SSE)
 
-%_avx2.o: %.cpp
+%_avx2.o: %.cpp config.mak
 	$(CXX) -std=c++11 -c $< -o $@ -MMD -MF $(@:.o=.d) -MT $@ $(CFLAGS_AVX2)
 
 slhdr_cwrap.pc:

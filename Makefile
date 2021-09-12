@@ -28,7 +28,7 @@ pp_slhdr_avx2.so: pp_wrapper_slhdr_avx2.o
 	$(CXX) -std=c++11 -c $< -o $@ -MMD -MF $(@:.o=.d) -MT $@ $(CFLAGS_AVX2)
 
 slhdr_cwrap.pc:
-	touch $@
+	./genpkgcfg.sh
 
 install: install_headers install_lib install_pkgcfg
 

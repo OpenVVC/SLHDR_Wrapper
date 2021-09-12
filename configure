@@ -135,7 +135,7 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
 cat > config.mak <<EOF
   CXX= ${cxx}
-  CFLAGS= -Wall -O3
+  CFLAGS= -Wall -O3 -fPIC
   SSE_CFLAGS= -msse4.2
   AVX2_CFLAGS= -mavx2
   SSE_FOLDER=${ssedir}

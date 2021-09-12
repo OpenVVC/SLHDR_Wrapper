@@ -137,23 +137,23 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
 
 cat > config.mak <<EOF
-  CXX= ${cxx}
-  CFLAGS= -Wall -O3 -fPIC
-  SSE_CFLAGS= -msse4.2
-  AVX2_CFLAGS= -mavx2
-  SSE_FOLDER=${ssedir}
-  AVX2_FOLDER=${avxdir}
-  SSE_LD_FLAGS=${SSE_LD_FLAGS}
-  AVX2_LD_FLAGS=${AVX_LD_FLAGS}
-  SSE_INCDIR=${ssedir}/include
-  AVX_INCDIR=${avxdir}/include
-  SSE_LD_PATH=-L${ssedir}/lib
-  AVX2_LD_PATH=-L${avxdir}/lib
+CXX= ${cxx}
+CFLAGS= -Wall -O3 -fPIC
+SSE_CFLAGS= -msse4.2
+AVX2_CFLAGS= -mavx2
+SSE_FOLDER=${ssedir}
+AVX2_FOLDER=${avxdir}
+SSE_LD_FLAGS=${SSE_LD_FLAGS}
+AVX2_LD_FLAGS=${AVX_LD_FLAGS}
+SSE_INCDIR=${ssedir}/include
+AVX_INCDIR=${avxdir}/include
+SSE_LD_PATH=-L${ssedir}/lib
+AVX2_LD_PATH=-L${avxdir}/lib
 
-  SUFFIX=${suffix}
-	PKGDIR=${pkgdir}
-	INCDIR=${incdir}
-	LIBDIR=${libdir}
+SUFFIX=${suffix}
+PKGDIR=${pkgdir}
+INCDIR=${incdir}
+LIBDIR=${libdir}
 
 EOF
 

@@ -3,6 +3,8 @@ include config.mak
 CFLAGS:=$(CFLAGS) -I$(SRC_INCDIR)
 LD_FLAGS:=$(LD_PATH) $(LD_FLAGS)
 
+SRCS:=$(wildcard *.cpp)
+
 .PHONY: install clean all
 
 all: pp_slhdr$(SUFFIX).so
@@ -10,8 +12,15 @@ all: pp_slhdr$(SUFFIX).so
 pp_slhdr$(SUFFIX).so: pp_wrapper_slhdr.o
 	$(CC) -shared $^ -o $@ $(LD_FLAGS)
 
-%.o: %.cpp config.mak
+%.o: %.cpp %.d | $(DEPFILES)
 	$(CXX) -std=c++11 -c $< -o $@ -MMD -MF $(@:.o=.d) -MT $@ $(CFLAGS)
+
+
+DEPFILES := $(SRCS:%.cpp=%.d)
+
+$(DEPFILES): ;
+
+include $(wildcard $(DEPFILES))
 
 slhdr_cwrap.pc:
 	./genpkgcfg.sh

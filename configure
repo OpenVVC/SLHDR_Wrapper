@@ -41,7 +41,7 @@ Options:
   --help                   print this message
   --cxx=<compiler>         define used compiler[${cxx}]
 
-  --avxdir=DIR             path to slhdr library AVX version
+  --srcdir=DIR             path to slhdr library[${srcdir}]
 
   --prefix=PREFIX          install in PREFIX [${prefix}]
   --libdir=LIBDIR          install library in LIBDIR [PREFIX/lib]
@@ -92,7 +92,7 @@ append_ldflags_list() {
    shift
 
    for elem in $* ; do
-      ld_flags="${ld_flags} -l${elem}"
+      ld_flags=$(echo ${ld_flags} -l${elem})
    done
 
    eval "$lname=\"\$${lname} ${ld_flags}\""
@@ -120,37 +120,33 @@ libdir=${libdir:-${prefix}/lib}
 incdir=${incdir:-${prefix}/include}
 pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
-[ -z ${avxdir} ] && die "No SL-HDR install directory found."
+[ -z ${srcdir} ] && die "No SL-HDR install directory found."
 
-[ ! -z ${avxdir} ] && [ -d ${avxdir} ] && {
-  check_libs_in_dir "${dep_list}" ${avxdir}
-  append_ldflags_list AVX_LD_FLAGS ${dep_list}
-  check_headers_in_dir "${header_list}" ${avxdir}
+[ ! -z ${srcdir} ] && [ -d ${srcdir} ] && {
+  check_libs_in_dir "${dep_list}" ${srcdir}
+  append_ldflags_list LD_FLAGS ${dep_list}
+  check_headers_in_dir "${header_list}" ${srcdir}
 }
 
 
 cat > config.mak <<EOF
 CXX= ${cxx}
 CFLAGS= -Wall -O3 -fPIC
-AVX2_CFLAGS= -mavx2
-AVX2_FOLDER=${avxdir}
-AVX2_LD_FLAGS=${AVX_LD_FLAGS}
-AVX_INCDIR=${avxdir}/include
-AVX2_LD_PATH=-L${avxdir}/lib
-
+SRC_INCDIR=${srcdir}/include
+LD_FLAGS=${LD_FLAGS}
+LD_PATH=-L${srcdir}/lib
 SUFFIX=${suffix}
 PKGDIR=${pkgdir}
 INCDIR=${incdir}
 LIBDIR=${libdir}
-
 EOF
 
 cat > config.sh << EOF
 pkgdir=${pkgdir}
 incdir=${incdir}
 libdir=${libdir}
-deplibs="${AVX_LD_FLAGS}"
-slhdr_dir=${avxdir}/lib
-rpath="-Wl,-rpath=${libdir}:${avxdir}/lib"
+deplibs="${LD_FLAGS}"
+slhdr_dir=${srcdir}/lib
+rpath="-Wl,-rpath=${libdir}:${srcdir}/lib"
 EOF
 exit 0

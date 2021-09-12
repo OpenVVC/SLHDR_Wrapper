@@ -1,7 +1,7 @@
 include config.mak
 
-CFLAGS:=$(CFLAGS) -I$(AVX_INCDIR)
-LD_FLAGS:=$(AVX2_LD_PATH) $(AVX2_LD_FLAGS)
+CFLAGS:=$(CFLAGS) -I$(SRC_INCDIR)
+LD_FLAGS:=$(LD_PATH) $(LD_FLAGS)
 
 INSTALL=cp -p
 MKDIR=mkdir -p

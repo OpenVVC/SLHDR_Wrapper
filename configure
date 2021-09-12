@@ -14,8 +14,21 @@ die() {
 }
 
 dep_list="
- SLHDRCommon
- SLHDRPostprocessor
+  SLHDRCommon
+  SLHDRPostprocessor
+"
+header_list="
+  SLHDRCommon/SLBuffer.h
+  SLHDRCommon/SLCommon.h
+  SLHDRCommon/SLError.h
+  SLHDRCommon/SLHDRCommonExport.h
+  SLHDRCommon/SLSlicedBuffer.h
+  SLHDRCommon/SLStreamProperties.h
+  SLHDRCommon/SLTypedef.h
+  SLHDRCommon/SLTypes.h
+  SLHDRPostprocessor/SLHDRPostprocessorExport.h
+  SLHDRPostprocessor/SLPostprocessorContext.h
+  SLHDRPostprocessor/SLPostprocessorContextProperties.h
 "
 
 show_help() {
@@ -52,6 +65,23 @@ check_libs_in_dir() {
    dir="$2/lib"
    for lib in $lib_list ; do
        validate_lib "${lib}" "${dir}" || die "${lib} library not found in ${dir}"
+   done
+}
+
+validate_header() {
+   lib="$1"
+   dir=$2
+
+   [ -f "${dir}/${lib}" ] && log "Found $1 in $2" || return 1
+
+   return 0
+}
+
+check_headers_in_dir() {
+   h_list=$1
+   dir="$2/include"
+   for h in $h_list ; do
+       validate_header "${h}" "${dir}" || die "${h} library not found in ${dir}"
    done
 }
 
@@ -93,11 +123,13 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 [ ! -z ${ssedir} ] && [ -d ${ssedir} ] && {
   check_libs_in_dir "${dep_list}" ${ssedir}
   append_ldflags_list SSE_LD_FLAGS ${dep_list}
+  check_headers_in_dir "${header_list}" ${ssedir}
 }
 
 [ ! -z ${avxdir} ] && [ -d ${avxdir} ] && {
   check_libs_in_dir "${dep_list}" ${avxdir}
   append_ldflags_list AVX_LD_FLAGS ${dep_list}
+  check_headers_in_dir "${header_list}" ${avxdir}
 }
 
 

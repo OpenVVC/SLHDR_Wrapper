@@ -39,7 +39,7 @@ install_headers: pp_wrapper_slhdr.h
 install_lib: pp_slhdr_avx2.so
 	$(MKDIR) $(LIBDIR)
 	$(INSTALL) $< $(LIBDIR)/
-	$(LN) $< $(LIBDIR)/lib_cwrap.so
+	$(LN) $< $(LIBDIR)/libslhdr_cwrap.so
 
 install_pkgcfg: slhdr_cwrap.pc
 	$(MKDIR) $(PKGDIR)

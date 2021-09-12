@@ -27,7 +27,10 @@ pp_slhdr_avx2.so: pp_wrapper_slhdr_avx2.o
 %_avx2.o: %.cpp
 	$(CXX) -std=c++11 -c $< -o $@ -MMD -MF $(@:.o=.d) -MT $@ $(CFLAGS_AVX2)
 
-install: install_headers install_lib
+slhdr_cwrap.pc:
+	touch $@
+
+install: install_headers install_lib install_pkgcfg
 
 install_headers: pp_wrapper_slhdr.h
 	$(MKDIR) $(INCDIR)
@@ -37,6 +40,10 @@ install_lib: pp_slhdr_avx2.so
 	$(MKDIR) $(LIBDIR)
 	$(INSTALL) $< $(LIBDIR)/
 	$(LN) $< $(LIBDIR)/lib_cwrap.so
+
+install_pkgcfg: slhdr_cwrap.pc
+	$(MKDIR) $(PKGDIR)
+	$(INSTALL) $< $(PKGDIR)/
 
 clean:
 	$(RM) *.so *.o *.d

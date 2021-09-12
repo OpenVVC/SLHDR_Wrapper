@@ -41,7 +41,6 @@ Options:
   --help                   print this message
   --cxx=<compiler>         define used compiler[${cxx}]
 
-  --ssedir=DIR             path to slhdr library SSE version
   --avxdir=DIR             path to slhdr library AVX version
 
   --prefix=PREFIX          install in PREFIX [${prefix}]
@@ -121,13 +120,7 @@ libdir=${libdir:-${prefix}/lib}
 incdir=${incdir:-${prefix}/include}
 pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
-[ -z ${ssedir} ] && [ -z ${avxdir} ] && die "No SL-HDR install directory found."
-
-[ ! -z ${ssedir} ] && [ -d ${ssedir} ] && {
-  check_libs_in_dir "${dep_list}" ${ssedir}
-  append_ldflags_list SSE_LD_FLAGS ${dep_list}
-  check_headers_in_dir "${header_list}" ${ssedir}
-}
+[ -z ${avxdir} ] && die "No SL-HDR install directory found."
 
 [ ! -z ${avxdir} ] && [ -d ${avxdir} ] && {
   check_libs_in_dir "${dep_list}" ${avxdir}
@@ -139,15 +132,10 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 cat > config.mak <<EOF
 CXX= ${cxx}
 CFLAGS= -Wall -O3 -fPIC
-SSE_CFLAGS= -msse4.2
 AVX2_CFLAGS= -mavx2
-SSE_FOLDER=${ssedir}
 AVX2_FOLDER=${avxdir}
-SSE_LD_FLAGS=${SSE_LD_FLAGS}
 AVX2_LD_FLAGS=${AVX_LD_FLAGS}
-SSE_INCDIR=${ssedir}/include
 AVX_INCDIR=${avxdir}/include
-SSE_LD_PATH=-L${ssedir}/lib
 AVX2_LD_PATH=-L${avxdir}/lib
 
 SUFFIX=${suffix}

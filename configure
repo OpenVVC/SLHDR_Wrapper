@@ -131,6 +131,9 @@ pkgdir=${pkgdir:-${libdir}/pkgconfig}
 
 cat > config.mak <<EOF
 CXX= ${cxx}
+INSTALL=cp -p
+MKDIR=mkdir -p
+LN=ln -sf
 CFLAGS= -Wall -O3 -fPIC
 SRC_INCDIR=${srcdir}/include
 LD_FLAGS=${LD_FLAGS}

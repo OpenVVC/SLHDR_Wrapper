@@ -3,10 +3,6 @@ include config.mak
 CFLAGS:=$(CFLAGS) -I$(SRC_INCDIR)
 LD_FLAGS:=$(LD_PATH) $(LD_FLAGS)
 
-INSTALL=cp -p
-MKDIR=mkdir -p
-LN=ln -sf
-
 .PHONY: install clean all
 
 all: pp_slhdr$(SUFFIX).so

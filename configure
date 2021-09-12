@@ -142,6 +142,10 @@ cat > config.mak <<EOF
   AVX2_FOLDER=${avxdir}
   SSE_LD_FLAGS=${SSE_LD_FLAGS}
   AVX2_LD_FLAGS=${AVX_LD_FLAGS}
+  SSE_INCDIR=${ssedir}/include
+  AVX_INCDIR=${avxdir}/include
+  SSE_LD_PATH=-L${ssedir}/lib
+  AVX2_LD_PATH=-L${avxdir}/lib
 
 	PKGDIR=${pkgdir}
 	INCDIR=${incdir}

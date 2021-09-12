@@ -12,6 +12,9 @@ LN=ln -sf
 
 all: pp_slhdr_sse.so pp_slhdr_avx2.so
 
+.PHONY: install clean all
+
+
 pp_slhdr_sse.so: pp_wrapper_slhdr_sse.o
 	$(CC) -shared $^ -o $@ $(LD_FLAGS_SSE)
 

@@ -152,4 +152,12 @@ cat > config.mak <<EOF
 	LIBDIR=${libdir}
 EOF
 
+cat > config.sh << EOF
+pkgdir=${pkgdir}
+incdir=${incdir}
+libdir=${libdir}
+deplibs="${AVX_LD_FLAGS}"
+slhdr_dir=${avxdir}/lib
+rpath="-Wl,-rpath=${libdir}:${avxdir}/lib"
+EOF
 exit 0

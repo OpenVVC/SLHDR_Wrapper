@@ -46,4 +46,4 @@ install_pkgcfg: slhdr_cwrap.pc
 	$(INSTALL) $< $(PKGDIR)/
 
 clean:
-	$(RM) *.so *.o *.d
+	$(RM) *.so *.o *.d *.pc

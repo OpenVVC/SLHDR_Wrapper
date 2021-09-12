@@ -3,7 +3,9 @@
 #include "SLHDRPostprocessor/SLPostprocessorContext.h"
 #include "SLHDRCommon/SLCommon.h"
 
-extern "C" void
+#include "pp_wrapper_slhdr.h"
+
+void
 pp_init_slhdr_lib(void** pslhdr_context)
 {
     //Request PQ as transfer function for reconstructed HDR
@@ -27,21 +29,21 @@ pp_init_slhdr_lib(void** pslhdr_context)
 
 }
 
-extern "C" void
+void
 pp_uninit_slhdr_lib(void* slhdr_context)
 {
     SLHDR::SLPostprocessorContext* dsl = (SLHDR::SLPostprocessorContext*)slhdr_context;
     delete dsl;
 }
 
-extern "C" void
+void
 pp_slhdr_no_filter(void* slhdr_context, int16_t** sdr_pic, int16_t** hdr_pic,
                 uint8_t* SEIPayload, int pic_width, int pic_height)
 {
     return;
 }
 
-extern "C" void
+void
 pp_sdr_to_hdr(void* slhdr_context, int16_t** sdr_pic, int16_t** hdr_pic,
                 uint8_t* SEIPayload, int pic_width, int pic_height)
 {

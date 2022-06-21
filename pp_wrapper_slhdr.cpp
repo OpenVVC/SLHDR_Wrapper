@@ -12,9 +12,6 @@ pp_init_slhdr_lib(void** pslhdr_context)
     SLHDR::SLPostprocessorContextProperties postprocessorProperties;
     postprocessorProperties.HDRTransferFunction = SLHDR::PQ;
 
-    //print postprocessor properties
-    postprocessorProperties.print();
-
     //create a the cpu list to specify on which cpu threads from the thread pool will be binded (we use 4 cpu here)
     std::vector<u8> cpulist;
     for (u8 cpu = 0; cpu < SLHDR::getMaxThreadAvailableCount(); cpu++)
@@ -51,26 +48,12 @@ pp_sdr_to_hdr(void* slhdr_context, int16_t** sdr_pic, int16_t** hdr_pic,
     SLHDR::SLPostprocessorContext* dsl = (SLHDR::SLPostprocessorContext*)slhdr_context;
 
     //allocate memory for the HD YUV SDR 420 input
-    // SLHDR::SLBuffer inPic(1920, 1080,2,SLHDR::p420);
     SLHDR::SLBuffer inPic(sdr_pic[0], sdr_pic[1], sdr_pic[2], pic_width, pic_height, 2, SLHDR::p420);
 
     //allocate memory for the reconstructed HD YUV HDR v210 output
-    // SLHDR::SLBuffer reconstructedHDRPic(1920, 1080,2, SLHDR::p420);
     SLHDR::SLBuffer reconstructedHDRPic(hdr_pic[0], hdr_pic[1], hdr_pic[2], pic_width, pic_height, 2, SLHDR::p420);
 
     SLHDR::SLError err = dsl->decode(inPic, SEIPayload, reconstructedHDRPic);
-
-    if(err)
-    {
-        printf("postprocessor error : %s\n",dsl->getErrorString().c_str());
-        return ;
-    }
-
-    //print input stream characteristics. only works after one frame has been decoded.
-    // dsl.getStreamProperties().print();
-
-
-    printf("done !\n");
 
     return ;
 }

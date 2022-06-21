@@ -136,7 +136,7 @@ MKDIR=mkdir -p
 LN=ln -sf
 CFLAGS= -Wall -O3 -fPIC
 SRC_INCDIR=${srcdir}/include
-LD_FLAGS=${LD_FLAGS}
+LD_FLAGS=-Wl,-rpath=${srcdir}/lib ${LD_FLAGS}
 LD_PATH=-L${srcdir}/lib
 SUFFIX=${suffix}
 PKGDIR=${pkgdir}
@@ -150,6 +150,6 @@ incdir=${incdir}
 libdir=${libdir}
 deplibs="${LD_FLAGS}"
 slhdr_dir=${srcdir}/lib
-rpath="-Wl,-rpath=${libdir}:${srcdir}/lib"
+rpath="-Wl,-rpath-link=${srcdir}/lib"
 EOF
 exit 0

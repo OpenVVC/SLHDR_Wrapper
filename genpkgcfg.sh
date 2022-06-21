@@ -15,7 +15,7 @@ Version: ${MAJOR}.${MINOR}.${REVISION}
 Requires:
 Requires.private:
 Conflicts:
-Libs: -L\${libdir} -L\${slhdr_dir} ${rpath} -lslhdr_cwrap \${deplibs}
-Libs.private: -L\${slhdr_dir}
+Libs: -L\${libdir} -lslhdr_cwrap
+Libs.private: -L\${slhdr_dir} \${deplibs}
 Cflags: -I\${includedir}
 EOF

@@ -1,0 +1,74 @@
+cmake_minimum_required(VERSION 3.10)
+
+if(WIN32)
+    message("This is a Windows System")
+
+    set( CMAKE_VERBOSE_MAKEFILE ON)
+
+    project( slhdrwrapper VERSION 1.0.0 DESCRIPTION "C wrapper to use Interdigital SLHDR library")
+
+    set( SLHDR_LIBRARIES "C:/Users/quinquisc/VS/SLHDR_SDK_v1.7.0_win10_msvc16_AVX2/SLHDR_SDK_v1.7.0_win10_msvc16_AVX2/lib/x64/Release" CACHE PATH "Path to SL-HDR libraries")
+    set( SLHDR_INCLUDES "C:/Users/quinquisc/VS/SLHDR_SDK_v1.7.0_win10_msvc16_AVX2/SLHDR_SDK_v1.7.0_win10_msvc16_AVX2/include" CACHE PATH "Path to SLHDR Common includes")
+    set( PUBLIC_HEADER "C:/Users/quinquisc/VS/SLHDR_Wrapper/pp_wrapper_slhdr.h")
+    set( CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}")
+
+    # to install libraries
+    include(GNUInstallDirs)
+
+    # to create the .dll
+    add_library(slhdrwrapperlib SHARED  pp_wrapper_slhdr.cpp pp_wrapper_slhdr.h)
+    add_library(slhdrwrapperlibStatic STATIC pp_wrapper_slhdr.cpp pp_wrapper_slhdr.h)
+    #set_target_properties(
+    #    slhdrwrapperlibStatic PROPERTIES
+    #    OUTPUT_NAME test
+    #    ARCHIVE_OUTPUT_DIRECTORY slhdrwrapperlibStatic
+    #)
+
+    # to search SL_HDR libraries
+    find_library(SLHDRPOSTPROCESSOR_LIB 
+	NAMES
+		SLHDRPostprocessor
+	PATHS
+		"${SLHDR_LIBRARIES}"
+	NO_DEFAULT_PATH)
+
+    message("SLHDRPOSTPROCESSOR_LIB is: ${SLHDRPOSTPROCESSOR_LIB}")
+
+    find_library(SLHDRCOMMON_LIB 
+	NAMES
+	        SLHDRCommon
+	PATHS
+	        "${SLHDR_LIBRARIES}"
+	NO_DEFAULT_PATH)
+
+    message("SLHDRCOMMON_LIB is: ${SLHDRCOMMON_LIB}")
+
+    find_path(SLHDRPOSTPROCESSOR_PATH 
+	NAMES 
+		SLPostprocessorContext.h
+	PATHS
+	        "${SLHDR_INCLUDES}/SLHDRPostprocessor"
+	NO_DEFAULT_PATH)
+
+    message("SLHDRPOSTPROCESSOR_PATH is: ${SLHDRPOSTPROCESSOR_PATH}")
+
+    find_path(SLHDRCOMMON_PATH
+        NAMES
+                SLHDRCommonExport.h
+	PATHS
+	        "${SLHDR_INCLUDES}/SLHDRCommon"
+        NO_DEFAULT_PATH)
+
+    message("SLHDRCOMMON_PATH is: ${SLHDRCOMMON_PATH}")
+
+    include_directories("${SLHDRPOSTPROCESSOR_PATH}/..")
+    include_directories("${SLHDRCOMMON_PATH}/..")
+
+    # For the linker
+    target_link_libraries(slhdrwrapperlib PRIVATE "${SLHDRPOSTPROCESSOR_LIB}" "${SLHDRCOMMON_LIB}")
+
+    # to be checked
+    install(TARGETS slhdrwrapperlib RUNTIME DESTINATION lib)
+    install(FILES ${PUBLIC_HEADER} DESTINATION include)
+
+endif()

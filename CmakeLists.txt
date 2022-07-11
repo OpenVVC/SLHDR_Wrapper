@@ -16,8 +16,8 @@ if(WIN32)
     include(GNUInstallDirs)
 
     # to create the .dll
-    add_library(slhdrwrapperlib SHARED  pp_wrapper_slhdr.cpp pp_wrapper_slhdr.h)
-    add_library(slhdrwrapperlibStatic STATIC pp_wrapper_slhdr.cpp pp_wrapper_slhdr.h)
+    add_library(libslhdrwrapperlib SHARED  pp_wrapper_slhdr.cpp pp_wrapper_slhdr.h)
+    add_library(libslhdrwrapperlibStatic STATIC pp_wrapper_slhdr.cpp pp_wrapper_slhdr.h)
     #set_target_properties(
     #    slhdrwrapperlibStatic PROPERTIES
     #    OUTPUT_NAME test
@@ -65,10 +65,19 @@ if(WIN32)
     include_directories("${SLHDRCOMMON_PATH}/..")
 
     # For the linker
-    target_link_libraries(slhdrwrapperlib PRIVATE "${SLHDRPOSTPROCESSOR_LIB}" "${SLHDRCOMMON_LIB}")
+    target_link_libraries(libslhdrwrapperlib PRIVATE "${SLHDRPOSTPROCESSOR_LIB}" "${SLHDRCOMMON_LIB}")
 
     # to be checked
-    install(TARGETS slhdrwrapperlib RUNTIME DESTINATION lib)
+
+    set(pc_libs_private)
+    set(pc_req_private)
+    set(pc_req_public)
+
+    configure_file(slhdr_cwrap.pc.in slhdr_cwrap.pc @ONLY)
+
+    install(TARGETS libslhdrwrapperlib RUNTIME DESTINATION bin)
+    install(TARGETS libslhdrwrapperlibStatic RUNTIME DESTINATION lib)
     install(FILES ${PUBLIC_HEADER} DESTINATION include)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/slhdr_cwrap.pc  DESTINATION lib/pkgconfig)
 
 endif()
